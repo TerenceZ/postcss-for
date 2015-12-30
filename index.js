@@ -2,6 +2,8 @@ var postcss = require('postcss');
 var list    = require('postcss/lib/list');
 var vars    = require('postcss-simple-vars');
 
+var numberRegExp = /^-?(?:\d+)?\.?\d+/
+
 module.exports = postcss.plugin('postcss-for', function (opts) {
 
     opts = opts || {};
@@ -11,7 +13,7 @@ module.exports = postcss.plugin('postcss-for', function (opts) {
 
     checkNumber = function (rule) {
         return function (param) {
-            if (isNaN(parseInt(param)) || !param.match(/^\d+\.?\d*$/)) {
+            if (isNaN(parseInt(param)) || !numberRegExp.test(param)) {
 
                 if (param.indexOf('$') !== -1) {
                     throw rule.error('Variable cannot be used as a range parameter', { plugin: 'postcss-for' });
